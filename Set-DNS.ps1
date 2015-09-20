@@ -118,7 +118,7 @@ function WriteLine {
     }
 }
 
-Write-Host "`nSet-Adapter-DNS created July 29, 2015 by Chaim Eliyah for InComm`n"
+Write-Host "`nSet-Adapter-DNS created July 29, 2015 by Chaim Eliyah`n"
 Validate $args
 ExitIfMatches $args[0] $args[1] $args[2]
 WriteLine $args[0] $args[1]
