@@ -13,9 +13,14 @@ function Validate {
 
     if ($InputValues[0] -eq $null -or -not ([System.IO.File]::Exists($InputValues[0])))
     {
-        #here we lost the ability to copy multiple files with wildcards.
-        $errorMessage = "Sorry, `"" + $InputValues[0] + "`" doesn't seem to exist."
-        ExitWithError $errorMessage
+        [string]$directoryName = [System.IO.Path]::GetDirectoryName($InputValues[0])
+        [string]$fileName = [System.IO.Path]::GetFileName($InputValues[0])
+
+        if (-not [System.IO.Directory]::Exists($directoryName) -or -not [System.IO.Directory]::EnumerateFiles($directoryName, $fileName))
+        {
+            $errorMessage = "Sorry, `"" + $InputValues[0] + "`" doesn't seem to exist."
+            ExitWithError $errorMessage
+        }
     }
 
     if ($InputValues[1] -eq $null -or -not ([System.IO.Directory]::Exists($InputValues[1])))
