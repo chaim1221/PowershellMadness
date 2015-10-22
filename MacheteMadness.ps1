@@ -1,21 +1,19 @@
 ﻿param (
-    [int]$DaysAgo = 30,
+    [int]$DaysAgo = 145,
     [string]$FileType = "*.*"
 )
 
 [string]$webDirectory = "C:\inetpub\wwwroot"
 
-function DisplayUsage {
-    Write-Host ("In display usage")
-    Exit
-}
-
 try
 {
-    Get-ChildItem -filter $FileType -recurse -path C:\inetpub\wwwroot | where {$_.LastWriteTime -gt (get-date).AddDays(-1 * $DaysAgo)}
+    Get-ChildItem -File -filter $FileType -recurse -path $webDirectory | 
+    ? {$_.LastWriteTime -ge (get-date).AddDays(-1 * $DaysAgo) -and $_.Name -notmatch "nlog" } | 
+    Select-Object FullName, LastWriteTime |
+    Group-Object LastWriteTime
 }
 catch
 {
     $Host.UI.WriteErrorLine("Whoops! An error occurred.")
-    DisplayUsage
 }
+# TODO get grouping to actually work
